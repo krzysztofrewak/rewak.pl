@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>rewak.pl</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.9.6/tailwind.min.css"
+              integrity="sha512-l7qZAq1JcXdHei6h2z8h8sMe3NbMrmowhOl+QkP3UhifPpCW2MC4M0i26Y8wYpbz1xD9t61MLT9L1N773dzlOA=="
+              crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/icon.min.css"
+              integrity="sha512-8Tb+T7SKUFQWOPIQCaLDWWe1K/SY8hvHl7brOH8Nz5z1VT8fnf8B+9neoUzmFY3OzkWMMs3OjrwZALgB1oXFBg=="
+              crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css2?family=Baloo+Da+2&display=swap" rel="stylesheet">
+        <style>
+            .background {
+                background: rgb(255, 163, 0);
+                background: linear-gradient(315deg, rgba(255, 163, 0, 1) 30%, rgba(255, 208, 71, 1) 65%);
+            }
+
+            .handwritten {
+                font-family: 'Baloo Da 2', cursive;
+            }
+        </style>
+    </head>
+
+    <body class="bg-orange-500 background text-white w-full min-h-screen flex justify-content items-center">
+        <div class="w-full flex-grow flex flex-col justify-center items-center" id="application">
+            <div class="handwritten text-6xl">
+                rewak.pl
+            </div>
+            <div class="text-5xl my-12 text-center">
+                <a :href="social.url" class="cursor-pointer mx-2" v-for="social in socials" target="_blank"
+                   @mouseover="selectSocial(social)" @mouseleave="selectSocial(null)">
+                    <i class="transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-150 icon"
+                       :class="social.icon"></i>
+                </a>
+            </div>
+            <div class="handwritten text-2xl">
+                <span v-if="selected">
+                    <strong class="text-bold">{{ selected.label }}</strong>, czyli
+                    {{ selected.description }}
+                </span>
+                <span v-else>&nbsp;</span>
+            </div>
+            <div class="handwritten absolute bottom-0 p-2">
+                Krzysztof Rewak & {{ new Date().getFullYear() }}
+            </div>
+        </div>
+    </body>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.0.2/vue.global.prod.js"
+            integrity="sha512-M8VjsuCj1iBzrwKloFNjvQBmFXT2oF0MWExoLGpQT2nEx5tq7CP+BhWGJdczT1LoWAhyqHh+LJ6ihHSVGyclHw=="
+            crossorigin="anonymous"></script>
+    <script>
+      class SocialMediaItem {
+        constructor (label, description, url, icon) {
+          this.url = url
+          this.description = description
+          this.label = label
+          this.icon = icon
+        }
+      }
+
+      const { createApp, ref } = Vue
+
+      const App = {
+        setup () {
+          const socials = ref([
+            new SocialMediaItem('Facebook', 'co robię', 'https://www.facebook.com/Krzysztof.Rewak/', 'facebook f'),
+            new SocialMediaItem('Github', 'co kodzę', 'https://github.com/krzysztofrewak', 'github'),
+            new SocialMediaItem('LinkedIn', 'gdzie pracuję', 'https://www.linkedin.com/in/krzysztofrewak/', 'linkedin'),
+            new SocialMediaItem('Instagram', 'gdzie jestem', 'https://www.instagram.com/krzysztof.rewak', 'instagram'),
+            new SocialMediaItem('Spotify', 'czego słucham', 'https://open.spotify.com/user/krzysztofrewak?si=umzmkW1PRfyITq2J4Ovwdw', 'spotify'),
+            new SocialMediaItem('Strava', 'gdzie jeżdżę na rowerze', 'https://www.strava.com/athletes/71249459', 'strava'),
+            new SocialMediaItem('Lubimyczytać.pl', 'co czytam', 'https://lubimyczytac.pl/profil/20782/Krzysztof', 'book'),
+            new SocialMediaItem('last.fm', 'czego słuchałem', 'https://www.last.fm/pl/user/Aquenral', 'lastfm'),
+            new SocialMediaItem('Untappd', 'co piję', 'https://untappd.com/user/krewak', 'untappd')
+          ])
+
+          let selected = ref(null)
+
+          function selectSocial (social) {
+            selected.value = social
+          }
+
+          return { socials, selected, selectSocial }
+        }
+      }
+
+      createApp(App).mount('#application')
+    </script>
+</html>
