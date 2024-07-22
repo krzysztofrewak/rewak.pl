@@ -1,0 +1,132 @@
+<html lang="en">
+  <head>
+    <title>Krzysztof Rewak</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/alpinejs" defer></script>
+  </head>
+  <body class="my-12 max-w-7xl mx-auto">
+    <ul role="list" class="divide-y divide-gray-100" x-data="init()">
+      <template x-for="lecture in lectures.reverse()">
+        <li class="flex items-center justify-between gap-x-6 py-5">
+          <div class="min-w-0">
+            <div class="flex items-start gap-x-3">
+              <p class="text-sm font-semibold leading-6 text-gray-900" x-text="lecture.title"></p>
+              <p class="mt-0.5 whitespace-nowrap rounded-md px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset" x-text="lecture.type" :class="getTypeClasses(lecture.type)"></p>
+            </div>
+            <div class="mt-1 flex items-center gap-x-2 text-xs leading-5 text-gray-500">
+              <p class="whitespace-nowrap" x-text="lecture.event"></p>
+              <svg viewBox="0 0 2 2" class="h-0.5 w-0.5 fill-current">
+                <circle cx="1" cy="1" r="1"/>
+              </svg>
+              <p class="whitespace-nowrap">
+                <time x-text="lecture.date"></time>
+              </p>
+              <svg viewBox="0 0 2 2" class="h-0.5 w-0.5 fill-current">
+                <circle cx="1" cy="1" r="1"/>
+              </svg>
+              <p x-text="lecture.location"></p>
+            </div>
+          </div>
+        </li>
+      </template>
+    </ul>
+  </body>
+  <script>
+    function init() {
+      return {
+        getTypeClasses(type) {
+          if (type === "meetup")
+            return "bg-green-50 text-green-700 ring-green-600/20"
+
+          if (type === "konferencja naukowa")
+            return "bg-sky-50 text-sky-700 ring-sky-600/20"
+
+          return "bg-amber-50 text-amber-700 ring-amber-600/20"
+        },
+        lectures: [
+          {
+            "title": "Wstęp do teorii i zastosowań logiki rozmytej",
+            "event": "Otwarte Seminarium Naukowe Państwowej Wyższej Szkoły Zawodowej im. Witelona w Legnicy",
+            "location": "Legnica",
+            "type": "konferencja naukowa",
+            "date": "maj 2017"
+          },
+          {
+            "title": "Wdrożenie techniki Behaviour-Driven Development w oparciu o framework Behat",
+            "event": "webdev.legnica #1",
+            "location": "Legnica",
+            "type": "meetup",
+            "date": "listopad 2019"
+          },
+          {
+            "title": "Automatyzacja i utrzymanie jakości kodu",
+            "event": "Laravel Poland Meetup #16",
+            "location": "online",
+            "type": "meetup",
+            "date": "listopad 2020",
+            "link": "https://www.youtube.com/watch?v=TDF2wqsOvaA"
+          },
+          {
+            "title": "Studium przypadku mikroserwisowego API Gateway w PHP i nie tylko",
+            "event": "PHPers Wrocław #11",
+            "location": "Wrocław",
+            "type": "meetup",
+            "date": "styczeń 2022"
+          },
+          {
+            "title": "Cykl życia zapytania HTTP pod maską",
+            "event": "Laravel Poland Meetup #21",
+            "location": "online",
+            "type": "meetup",
+            "date": "marzec 2022",
+            "link": "https://www.youtube.com/watch?v=mFphzk_eaww"
+          },
+          {
+            "title": "PHP the right way w 2022 roku",
+            "event": "Warszawskie Dni Informatyki 2022",
+            "location": "Warszawa",
+            "type": "konferencja",
+            "date": "kwiecień 2022"
+          },
+          {
+            "title": "Co nas boli w Laravelu? Wady frameworka obiektywnym okiem",
+            "event": "Laravel Poland MeetUp Summer Vibes",
+            "location": "Wrocław",
+            "type": "meetup",
+            "date": "sierpień 2022"
+          },
+          {
+            "title": "Wykorzystanie metod inteligentnej optymalizacji w celu podnoszenia efektywności procesów produkcyjnych",
+            "event": "Międzynarodowa Konferencja Innowacyjne rozwiązania w gospodarce Smart Economy & Smart Industry",
+            "location": "Legnica",
+            "type": "konferencja naukowa",
+            "date": "wrzesień 2022"
+          },
+          {
+            "title": "Rozproszone sieci komunikacji na przykładzie integracji z systemem Erasmus Without Paper",
+            "event": "Międzynarodowa Konferencja Innowacyjne rozwiązania w gospodarce Transport, Logistics & Production",
+            "location": "Legnica",
+            "type": "konferencja naukowa",
+            "date": "październik 2023"
+          },
+          {
+            "title": "Systemy inteligentnego powiadamiania w miastach",
+            "event": "Konferencja naukowa pt. Sztuczna inteligencja szanse i zagrożenia",
+            "location": "Legnica",
+            "type": "konferencja naukowa",
+            "date": "maj 2024"
+          },
+          {
+            "title": "Wdrażanie Krajowego Systemu e-Faktur",
+            "event": "Konferencja naukowa pt. Sztuczna inteligencja szanse i zagrożenia",
+            "location": "Legnica",
+            "type": "konferencja naukowa",
+            "date": "maj 2024"
+          }
+        ]
+      }
+    }
+  </script>
+</html>
