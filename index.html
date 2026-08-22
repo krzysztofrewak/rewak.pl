@@ -1,91 +1,132 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>rewak.pl</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.9.6/tailwind.min.css"
-              integrity="sha512-l7qZAq1JcXdHei6h2z8h8sMe3NbMrmowhOl+QkP3UhifPpCW2MC4M0i26Y8wYpbz1xD9t61MLT9L1N773dzlOA=="
-              crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/icon.min.css"
-              integrity="sha512-8Tb+T7SKUFQWOPIQCaLDWWe1K/SY8hvHl7brOH8Nz5z1VT8fnf8B+9neoUzmFY3OzkWMMs3OjrwZALgB1oXFBg=="
-              crossorigin="anonymous">
-        <link href="https://fonts.googleapis.com/css2?family=Baloo+Da+2&display=swap" rel="stylesheet">
-        <style>
-            .background {
-                background: rgb(255, 163, 0);
-                background: linear-gradient(315deg, rgba(255, 163, 0, 1) 30%, rgba(255, 208, 71, 1) 65%);
-            }
+<html class="bg-white" lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krzysztof Rewak</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/json5@2/dist/index.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  </head>
+  <body class="flex mx-auto" x-data="brewing()" x-init="load()">
+    <div class="flex-1">
+      <div class="bg-zinc-100 py-10 sm:py-12">
+        <div class="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-10">
+          <h1 class="text-3xl sm:text-4xl">Krzysztof Rewak</h1>
+          <h2 class="text-zinc-500 text-lg sm:text-2xl">
+            researcher: <span class="text-zinc-700">intelligent replanning, digital twins for brewing industry, computer science</span>
+          </h2>
 
-            .handwritten {
-                font-family: 'Baloo Da 2', cursive;
-            }
-        </style>
-    </head>
-
-    <body class="bg-orange-500 background text-white w-full min-h-screen flex justify-content items-center">
-        <div class="w-full flex-grow flex flex-col justify-center items-center" id="application">
-            <div class="handwritten text-6xl">
-                rewak.pl
-            </div>
-            <div class="text-5xl my-12 text-center">
-                <a :href="social.url" class="cursor-pointer mx-2" v-for="social in socials" target="_blank"
-                   @mouseover="selectSocial(social)" @mouseleave="selectSocial(null)">
-                    <i class="transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-150 icon"
-                       :class="social.icon"></i>
-                </a>
-            </div>
-            <div class="handwritten text-2xl">
-                <span v-if="selected">
-                    <strong class="text-bold">{{ selected.label }}</strong>, czyli
-                    {{ selected.description }}
-                </span>
-                <span v-else>&nbsp;</span>
-            </div>
-            <div class="handwritten absolute bottom-0 p-2">
-                Krzysztof Rewak & {{ new Date().getFullYear() }}
-            </div>
+          <div class="mt-8 sm:mt-12 flex flex-wrap items-center gap-x-4 gap-y-3">
+            <a href="https://orcid.org/0009-0003-6847-8318" class="flex items-center gap-2" target="_blank">
+              <img src="./images/orcid.svg" alt="ORCID logo" class="size-6 shrink-0"> <span>ORCID <span class="font-semibold">0009-0003-6847-8318</span></span>
+            </a>
+            <a href="https://scholar.google.com/citations?user=jKm8Q_AAAAAJ" class="flex items-center gap-2" target="_blank">
+              <img src="./images/google.ico" alt="Google Scholar logo" class="size-6 shrink-0"> <span>Google Scholar</span>
+            </a>
+            <a href="https://researchgate.net/profile/Krzysztof-Rewak" class="flex items-center gap-2" target="_blank">
+              <img src="./images/rg.ico" alt="ResearchGate logo" class="size-6 shrink-0"> <span>ResearchGate</span>
+            </a>
+            <a href="https://ludzie.nauka.gov.pl/ln/profiles/J7BAUthOF6v" class="flex items-center gap-2" target="_blank">
+              <img src="./images/gov.ico" alt="nauka.gov.pl logo" class="size-6 shrink-0"> <span>nauka.gov.pl</span>
+            </a>
+            <a href="https://www.linkedin.com/in/krzysztofrewak/" class="flex items-center gap-2" target="_blank">
+              <img src="./images/linkedin.svg" alt="LinkedIn logo" class="size-6 shrink-0"> <span>LinkedIn</span>
+            </a>
+          </div>
         </div>
-    </body>
+      </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.0.2/vue.global.prod.js"
-            integrity="sha512-M8VjsuCj1iBzrwKloFNjvQBmFXT2oF0MWExoLGpQT2nEx5tq7CP+BhWGJdczT1LoWAhyqHh+LJ6ihHSVGyclHw=="
-            crossorigin="anonymous"></script>
+      <div class="bg-zinc-100/25">
+        <div class="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-10 py-4 flex flex-wrap items-center gap-2">
+          <template x-for="tag in primaryTags" :key="tag">
+            <button type="button" @click="togglePrimaryTag(tag)" class="text-sm px-3 py-1 rounded-full border transition-colors" :class="activePrimaryTag === tag ? 'bg-zinc-900 text-white border-zinc-900' : 'bg-white text-zinc-600 border-zinc-200 hover:border-zinc-400'" x-text="tag"></button>
+          </template>
+          <div class="w-px self-stretch bg-zinc-200 mx-1" x-show="primaryTags.length && secondaryTags.length"></div>
+          <template x-for="tag in secondaryTags" :key="tag">
+            <button type="button" @click="toggleSecondaryTag(tag)" class="text-sm px-3 py-1 rounded-full border transition-colors" :class="activeSecondaryTag === tag ? 'bg-zinc-900 text-white border-zinc-900' : 'bg-white text-zinc-600 border-zinc-200 hover:border-zinc-400'" x-text="tag"></button>
+          </template>
+        </div>
+      </div>
+
+      <div class="max-w-[1920px] py-10 sm:py-12 mx-auto px-4 sm:px-6 lg:px-10 flex flex-col gap-8 sm:gap-12">
+
+        <template x-for="entry in filteredEntries()" :key="entry.title">
+          <div class="flex flex-col relative py-2 border-l-8 pl-4 border-zinc-200 hover:border-zinc-300">
+            <div class="">
+              <div class="text-base text-zinc-900" x-show="entry.authors && entry.authors.length" x-text="`${(entry.authors || []).join(', ')}${entry.year ? ` (${entry.year})` : ''}`"></div>
+              <div class="text-lg sm:text-xl flex flex-wrap items-center gap-x-2 gap-y-1">
+                <span x-text="entry.title"></span> <span class="flex gap-1 text-sm bg-amber-100 px-3 py-1" x-show="entry.type === 'article'"> article </span>
+                <span class="flex gap-1 text-sm bg-rose-100 px-3 py-1" x-show="entry.type === 'chapter'"> book chapter </span> <span class="flex gap-1 text-sm bg-teal-100 px-3 py-1" x-show="entry.type === 'dataset'"> dataset </span>
+                <span class="flex gap-1 text-sm bg-orange-100 px-3 py-1" x-show="entry.openAccess"> <img src="./images/oa.png" class="size-8 -my-2" alt="Open access"> open access </span>
+                <span class="flex gap-1 text-sm bg-violet-100 px-3 py-1" x-show="entry.status === 'accepted'"> waiting for publication </span>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1 mt-2">
+              <template x-if="entry.publication">
+                <div class="inline">
+                  <span class="text-zinc-500" x-text="entry.publication.label"></span> <span x-text="entry.publication.text"></span>
+                  <template x-if="entry.publication.note">
+                    <span> <span class="text-zinc-500">in</span> <span x-text="entry.publication.note"></span> </span>
+                  </template>
+                </div>
+              </template>
+              <template x-if="entry.presentation">
+                <div class="inline">
+                  <span class="text-zinc-500" x-text="entry.presentation.label"></span> <span x-text="entry.presentation.conference"></span> <span class="text-zinc-500">on</span> <span x-text="entry.presentation.date"></span>
+                  <span class="text-zinc-500">in</span> <span x-text="entry.presentation.location"></span>
+                </div>
+              </template>
+            </div>
+            <template x-if="entry.link">
+              <div class="flex items-center flex-wrap gap-2 mt-2 text-zinc-700">
+                <a :href="entry.link.url">
+                  <img :src="entry.link.icon" :alt="entry.link.iconAlt" class="inline w-6 mr-2">
+                </a>
+                <a :href="entry.link.url" x-text="entry.link.text" class="break-all"></a>
+              </div>
+            </template>
+          </div>
+        </template>
+
+      </div>
+    </div>
+
     <script>
-      class SocialMediaItem {
-        constructor (label, description, url, icon) {
-          this.url = url
-          this.description = description
-          this.label = label
-          this.icon = icon
+      function brewing() {
+        return {
+          entries: [],
+          primaryTags: [],
+          secondaryTags: [],
+          activePrimaryTag: "research",
+          activeSecondaryTag: null,
+          async load() {
+            const response = await fetch("./data.json5")
+            const text = await response.text()
+            this.entries = JSON5.parse(text).entries
+            const allTags = [...new Set(this.entries.flatMap((entry) => entry.tags || []))]
+            const priority = ["research", "popular science"]
+            this.primaryTags = priority.filter((tag) => allTags.includes(tag))
+            this.secondaryTags = allTags.filter((tag) => !priority.includes(tag)).sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }))
+          },
+          togglePrimaryTag(tag) {
+            this.activePrimaryTag = this.activePrimaryTag === tag ? null : tag
+          },
+          toggleSecondaryTag(tag) {
+            this.activeSecondaryTag = this.activeSecondaryTag === tag ? null : tag
+          },
+          filteredEntries() {
+            return this.entries.filter((entry) => {
+              const tags = entry.tags || []
+              if (this.activePrimaryTag && !tags.includes(this.activePrimaryTag)) return false
+              if (this.activeSecondaryTag && !tags.includes(this.activeSecondaryTag)) return false
+              return true
+            })
+          },
         }
       }
-
-      const { createApp, ref } = Vue
-
-      const App = {
-        setup () {
-          const socials = ref([
-            new SocialMediaItem('Facebook', 'co robię', 'https://www.facebook.com/Krzysztof.Rewak/', 'facebook f'),
-            new SocialMediaItem('Github', 'co kodzę', 'https://github.com/krzysztofrewak', 'github'),
-            new SocialMediaItem('LinkedIn', 'gdzie pracuję', 'https://www.linkedin.com/in/krzysztofrewak/', 'linkedin'),
-            new SocialMediaItem('Instagram', 'gdzie jestem', 'https://www.instagram.com/krzysztof.rewak', 'instagram'),
-            new SocialMediaItem('Spotify', 'czego słucham', 'https://open.spotify.com/user/krzysztofrewak?si=umzmkW1PRfyITq2J4Ovwdw', 'spotify'),
-            new SocialMediaItem('Strava', 'gdzie jeżdżę na rowerze', 'https://www.strava.com/athletes/71249459', 'strava'),
-            new SocialMediaItem('Lubimyczytać.pl', 'co czytam', 'https://lubimyczytac.pl/profil/20782/Krzysztof', 'book'),
-            new SocialMediaItem('last.fm', 'czego słuchałem', 'https://www.last.fm/pl/user/Aquenral', 'lastfm'),
-            new SocialMediaItem('Untappd', 'co piję', 'https://untappd.com/user/krewak', 'untappd')
-          ])
-
-          let selected = ref(null)
-
-          function selectSocial (social) {
-            selected.value = social
-          }
-
-          return { socials, selected, selectSocial }
-        }
-      }
-
-      createApp(App).mount('#application')
     </script>
+  </body>
 </html>
