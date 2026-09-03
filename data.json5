@@ -35,7 +35,7 @@
         note: null,
       },
       presentation: {
-        label: "accepted to be presented at",
+        label: "presented at",
         conference: "30th International Conference on Knowledge-Based and Intelligent Information & Engineering Systems (KES 2026)",
         date: "3 September 2026",
         location: "Dublin, Ireland (online)",
