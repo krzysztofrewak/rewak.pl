@@ -21,19 +21,19 @@
 
           <div class="mt-8 sm:mt-12 flex flex-wrap items-center gap-x-4 gap-y-3">
             <a href="https://orcid.org/0009-0003-6847-8318" class="flex items-center gap-2" target="_blank">
-              <img src="./images/orcid.svg" alt="ORCID logo" class="size-6 shrink-0"> <span>ORCID <span class="font-semibold">0009-0003-6847-8318</span></span>
+              <img src="./images/orcid.png" alt="ORCID logo" class="size-6 shrink-0"> <span>ORCID <span class="font-semibold">0009-0003-6847-8318</span></span>
             </a>
             <a href="https://scholar.google.com/citations?user=jKm8Q_AAAAAJ" class="flex items-center gap-2" target="_blank">
-              <img src="./images/google.ico" alt="Google Scholar logo" class="size-6 shrink-0"> <span>Google Scholar</span>
+              <img src="./images/google.png" alt="Google Scholar logo" class="size-6 shrink-0"> <span>Google Scholar</span>
             </a>
             <a href="https://researchgate.net/profile/Krzysztof-Rewak" class="flex items-center gap-2" target="_blank">
-              <img src="./images/rg.ico" alt="ResearchGate logo" class="size-6 shrink-0"> <span>ResearchGate</span>
+              <img src="./images/rg.png" alt="ResearchGate logo" class="size-6 shrink-0"> <span>ResearchGate</span>
             </a>
             <a href="https://ludzie.nauka.gov.pl/ln/profiles/J7BAUthOF6v" class="flex items-center gap-2" target="_blank">
-              <img src="./images/gov.ico" alt="nauka.gov.pl logo" class="size-6 shrink-0"> <span>nauka.gov.pl</span>
+              <img src="./images/gov.png" alt="nauka.gov.pl logo" class="size-6 shrink-0"> <span>nauka.gov.pl</span>
             </a>
             <a href="https://www.linkedin.com/in/krzysztofrewak/" class="flex items-center gap-2" target="_blank">
-              <img src="./images/linkedin.svg" alt="LinkedIn logo" class="size-6 shrink-0"> <span>LinkedIn</span>
+              <img src="./images/linkedin.png" alt="LinkedIn logo" class="size-6 shrink-0"> <span>LinkedIn</span>
             </a>
           </div>
         </div>
@@ -48,6 +48,11 @@
           <template x-for="tag in secondaryTags" :key="tag">
             <button type="button" @click="toggleSecondaryTag(tag)" class="text-sm px-3 py-1 rounded-full border transition-colors" :class="activeSecondaryTag === tag ? 'bg-zinc-900 text-white border-zinc-900' : 'bg-white text-zinc-600 border-zinc-200 hover:border-zinc-400'" x-text="tag"></button>
           </template>
+          <div class="w-px self-stretch bg-zinc-200 mx-1"></div>
+          <label class="flex items-center gap-2 text-sm text-zinc-600 cursor-pointer select-none">
+            <input type="checkbox" x-model="showAccepted" class="size-4 accent-zinc-900 cursor-pointer">
+            show accepted
+          </label>
         </div>
       </div>
 
@@ -82,10 +87,10 @@
             </div>
             <template x-if="entry.link">
               <div class="flex items-center flex-wrap gap-2 mt-2 text-zinc-700">
-                <a :href="entry.link.url">
-                  <img :src="entry.link.icon" :alt="entry.link.iconAlt" class="inline w-6 mr-2">
+                <a :href="entry.link.url" target="_blank">
+                  <img :src="entry.link.icon" :alt="entry.link.iconAlt" class="inline w-6">
                 </a>
-                <a :href="entry.link.url" x-text="entry.link.text" class="break-all"></a>
+                <a :href="entry.link.url" target="_blank" x-text="entry.link.text" class="break-all"></a>
               </div>
             </template>
           </div>
@@ -102,12 +107,13 @@
           secondaryTags: [],
           activePrimaryTag: "research",
           activeSecondaryTag: null,
+          showAccepted: false,
           async load() {
             const response = await fetch("./data.json5")
             const text = await response.text()
             this.entries = JSON5.parse(text).entries
             const allTags = [...new Set(this.entries.flatMap((entry) => entry.tags || []))]
-            const priority = ["research", "popular science"]
+            const priority = ["research", "others"]
             this.primaryTags = priority.filter((tag) => allTags.includes(tag))
             this.secondaryTags = allTags.filter((tag) => !priority.includes(tag)).sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }))
           },
@@ -120,6 +126,7 @@
           filteredEntries() {
             return this.entries.filter((entry) => {
               const tags = entry.tags || []
+              if (!this.showAccepted && entry.status === "accepted") return false
               if (this.activePrimaryTag && !tags.includes(this.activePrimaryTag)) return false
               if (this.activeSecondaryTag && !tags.includes(this.activeSecondaryTag)) return false
               return true
