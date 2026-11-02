@@ -27,11 +27,11 @@
       year: 2026,
       title: "Towards a Generalized Framework for Brewery Production Scheduling",
       type: "article",
-      status: "accepted",
-      openAccess: false,
+      status: "published",
+      openAccess: true,
       publication: {
-        label: "awaiting for publication in",
-        text: "Procedia Computer Science",
+        label: "published in",
+        text: "Procedia Computer Science, vol. 292; pp. 1996-2005",
         note: null,
       },
       presentation: {
@@ -40,15 +40,19 @@
         date: "3 September 2026",
         location: "Dublin, Ireland (online)",
       },
-      link: null,
+      link: {
+        icon: "./images/doi.png",
+        iconAlt: "DOI icon",
+        url: "https://doi.org/10.1016/j.procs.2026.09.275",
+        text: "10.1016/j.procs.2026.09.275",
+      }
     },
     {
       tags: ["presentations", "computer vision", "others", "artificial intelligence"],
       title: "Cameras as the Eyes of Intelligent Manufacturing: Computer Vision in Industry",
       type: "conference",
-      status: "accepted",
       presentation: {
-        label: "going to present at",
+        label: "presented at",
         conference: "Ostsächsische Maschinenbautage 2026",
         date: "28 October 2026",
         location: "Bautzen, Germany",
