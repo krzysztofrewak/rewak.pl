@@ -6,6 +6,7 @@
     <title>Krzysztof Rewak</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/krzysztofrewak/flat-flags-iconset@1.2/style.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/json5@2/dist/index.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -63,7 +64,7 @@
             <div class="">
               <div class="text-base text-zinc-900" x-show="entry.authors && entry.authors.length" x-text="`${(entry.authors || []).join(', ')}${entry.year ? ` (${entry.year})` : ''}`"></div>
               <div class="text-lg sm:text-xl flex flex-wrap items-center gap-x-2 gap-y-1">
-                <span x-text="entry.title"></span> <span class="flex gap-1 text-sm bg-amber-100 px-3 py-1" x-show="entry.type === 'article'"> article </span>
+                <i class="flat flag shrink-0" :class="entry.language === 'en' ? 'gb' : entry.language" x-show="entry.language" :title="entry.language === 'pl' ? 'Polish' : 'English'"></i> <span x-text="entry.title"></span> <span class="flex gap-1 text-sm bg-amber-100 px-3 py-1" x-show="entry.type === 'article'"> article </span>
                 <span class="flex gap-1 text-sm bg-rose-100 px-3 py-1" x-show="entry.type === 'chapter'"> book chapter </span> <span class="flex gap-1 text-sm bg-teal-100 px-3 py-1" x-show="entry.type === 'dataset'"> dataset </span>
                 <span class="flex gap-1 text-sm bg-orange-100 px-3 py-1" x-show="entry.openAccess"> <img src="./images/oa.png" class="size-8 -my-2" alt="Open access"> open access </span>
                 <span class="flex gap-1 text-sm bg-violet-100 px-3 py-1" x-show="entry.status === 'accepted'"> waiting for publication </span>
@@ -109,9 +110,10 @@
           activeSecondaryTag: null,
           showAccepted: false,
           async load() {
-            const response = await fetch("./data.json5")
-            const text = await response.text()
-            this.entries = JSON5.parse(text).entries
+            const fetchEntries = async (url) => JSON5.parse(await (await fetch(url)).text()).entries || []
+            const [publications, presentations] = await Promise.all([fetchEntries("./data/publications.json5"), fetchEntries("./data/presentations.json5")])
+            const entryYear = (entry) => entry.year ?? parseInt(entry.presentation?.date?.match(/\d{4}/)?.[0] ?? 0)
+            this.entries = [...publications, ...presentations].sort((a, b) => entryYear(b) - entryYear(a))
             const allTags = [...new Set(this.entries.flatMap((entry) => entry.tags || []))]
             const priority = ["research", "others"]
             this.primaryTags = priority.filter((tag) => allTags.includes(tag))
